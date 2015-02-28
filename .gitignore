@@ -1,0 +1,11 @@
+# Mac directories
+.DS_Store
+
+# LaTeX temporary files
+*.aux
+*.log
+*.toc
+*.pdf
+*.synctex.gz
+*.bbl
+*.blg
