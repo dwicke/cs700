@@ -179,12 +179,12 @@ Unlike a typical auction, a true bounty system is not exclusive: multiple agents
 To study this issue we compare several new approaches to how the bondsman sets and updates the bounty and bars commitment to tasks.  Such modified models are extensions of the original bounty system and are in line with standard contest theory principles.  The issue is that we can no longer compare against any of the auction literature, however, we can still compare the bounty system to an ``auction-like'' environment, by making tasks fully exclusive.  We will consider the following: 
 
 \begin{itemize}
-\item {\bf Bounties}\quad This is the model discussed earlier.  Tasks are not exclusive, bounty is incremented by 1 unit very timestep.
+\item {\bf Bounties}\quad This is the model discussed earlier.  Tasks are not exclusive, bounty is incremented by 1 unit every timestep.
 \item {\bf Bounties with an Adaptive Bondsman}\quad This model is similar to {\bf Bounties}, however tasks exclusivity and initial bounty is determined by the bondsman with an adaptive mechanism.
 \item {\bf Bounties with Cutoff}\quad This model is the same as {\bf Bounties}, except that the bondsman makes tasks unavailable after 2 agent's commit to the same task.  
-\item {\bf Bounties with a non-linear bounty}\quad This is the Bounties model, but with a non-linear {\it bounty} function \(B_{i}(t)\).
-\item {\bf Bounties with bounty plateau}\quad This is the Bounties model, however the bounty plateaus and does not increase after a learned period and then resumes increasing as normal after a learned period.
-\item {\bf Bounties with Exclusivity}\quad This is the Bounties model, except that when an agent commits to a task, he owns it exclusively: no other agent may commit to it.  If two or more agents simultaneously commit to a task, the winner is chosen at random, and the losers vie for the remaining tasks.
+\item {\bf Bounties with a non-linear bounty}\quad This is the {\bf Bounties} model, but with a non-linear {\it bounty} function \(B_{i}(t)\).
+\item {\bf Bounties with bounty plateau}\quad This is the {\bf Bounties} model, however the bounty plateaus and does not increase after a learned period and then resumes increasing as normal after a learned period.
+\item {\bf Bounties with Exclusivity}\quad This is the {\bf Bounties} model, except that when an agent commits to a task, he owns it exclusively: no other agent may commit to it.  If two or more agents simultaneously commit to a task, the winner is chosen at random, and the losers vie for the remaining tasks.
 \end{itemize}
 
 
@@ -263,10 +263,10 @@ We tested five scenarios.  First, we used a {\it static environment} where agent
 
 Dynamic environments require that agents explore sufficiently in order to understand that the world has changed.  We tested our four new bondsmen methods using the \textit{ComplexP} method as well as the ComplexE method in conjunction with the Adaptive Bondsman (shortened to \textit{ComplexE Adap Bond.}).  We compared these five methods against the ComplexP method with the standard bondsman and the exclusive bondsman from our previous work.  We chose these as they act as the boundary between the exclusivity and non-exclusivity.  
 
-Simulations ran for 200,000 timesteps, yielding a minimum of 2000 tasks per agent. Each combination of method, exploration technique, and scenario was run for 100 independent trials.  Statistical significance was verified using an ANOVA with a Tukey Post-hoc Test at \(p=0.05\).  This methodology was used as to stay consistent with past work and to obtain statistically valid results.  
+Simulations ran for 200,000 timesteps, yielding a minimum of 2000 tasks per agent. Each combination of method, exploration technique, and scenario was run for 100 independent trials.  Statistical significance was verified using an ANOVA with a Tukey Post-hoc Test at \(p=0.05\).  This methodology was used to stay consistent with past work and to obtain statistically valid results.  
 
 \paragrapha{Metrics}
-Previously we used the bounty as the metric for global system efficiency, however, since the bounty values grow differently depending on the bondsman we must implement a new measure.  The metric we used for global system efficiency was the sum total time available \(h(t)\) over outstanding tasks at a given time \(t\), that is, \(h(t) =\sum_{i\in Q^{(t)}}t_i\).  This metric enabled us to compare methods that adjust bounty in a non-linear manner.  Also, since we were interested in agent level efficiency, we measured the average number of redundant bounty hunters committed to tasks.
+Previously we used the bounty as the metric for global system efficiency, however, since the bounty values grow differently depending on the bondsman we must implement a new measure.  The metric we used for global system efficiency was the sum total time available \(h(t)\) over outstanding tasks at a given time \(t\), that is, \(h(t) =\sum_{i\in Q^{(t)}}t_i\).  This metric enabled us to compare methods that adjust bounty in a non-linear manner.  Also, since we were interested in agent level efficiency, we measured the number of redundant bounty hunters committed to tasks.
 
 
 \subsection{First Experiment: A Static Environment}
@@ -325,7 +325,7 @@ If the distribution of tasks suddenly changes, we want the bounty system to reco
 \paragrapha{Results}
 This experiment, as shown in Figure~\ref{rotT} and Figure~\ref{rotR}, shows the weakness of \textit{ComplexE AdapBond.} as it does the worst due to how drastically the environment changes due to agent location.  By rotating the agents, tasks that were exclusive should be non-exclusive however the bondsman is not able to adapt quick enough causing the tasks to wait much longer than any other method to be completed. Also, since the agents are now also learning about the exclusivity of the tasks, \textit{ComplexE}, the agents are less likely to go after tasks that they think will be exclusive.  So, they are less willing to adapt to their new position. Following \textit{ComplexE AdapBond.} is the \textit{Adaptive Bondsman}.  This method is in a totally different equivalency class than \textit{ComplexE AdapBond.}.  The only difference between the two is the learning method of the bounty hunters.  Therefore, the \textit{ComplexE} method is not able to effectively adapt to the rotating robots with an \textit{Adaptive Bondsman}.
 
-Another interesting result is that the redundancy of all of the methods are equivalent as seen in Figure~\ref{rotR}.  This was initially shocking due to rotating of the agents.  We initially hypothesized that there would be some redundancy due to overlap in the transition.  However, the agents are able to effectively transition as well as the \textit{Exclusive} approach, which does not allow redundant agents.
+Another interesting result is that the redundancy of all of the methods are equivalent as seen in Figure~\ref{rotR}.  This was initially shocking due to rotating of the agents.  We initially hypothesized that there would be some redundancy due to overlap in the transition.  However, the agents are able to efficiently transition just as well as the \textit{Exclusive} approach, which does not allow redundant agents.
 
 
 %\bump
@@ -345,7 +345,7 @@ Another interesting result is that the redundancy of all of the methods are equi
 
 
 \subsection{Fourth Experiment: Unreliable Collaborators}
-The purpose of Experiments 4 and 5 is to show when exclusivity can fail. In the previous experiments exclusivity was favorable, since non-exclusive approaches potentially wasted time on tasks another agent was completing. However, in these next experiments we show there are situations where non-exclusivity is desirable.
+The purpose of Experiments 4 and 5 is to show when exclusivity can fail. In the previous experiments exclusivity was favorable, since non-exclusive approaches potentially wasted time on tasks another agent was completing. However, in these next experiments we show there are situations where non-exclusivity is desirable and redundancy is kept in check.
 
 Suppose a system has agents which do not perform nearly as well as other agents. In this experiment, there were 2 agents, placed in the top left corner of the grid world, who moved 10x slower than other agents, and 4 agents, placed in the corners (like normal), who moved at a normal speed. We chose to test \textit{ComplexP} as our main bounty mechanism, and compared it to our two auction-like algorithms (\textit{Auction} and \textit{Exclusive}).
 
@@ -374,7 +374,7 @@ one-tenth his normal speed.
 
 \paragrapha{Results} 
 
-The results are shown in Figure~\ref{trapsT} and illustrated in Figure~\ref{trapsR}.  Again the exclusive methods and the adaptive bondsmen methods do not do well.  However, they are the methods that have the least redundancy as seen in Figure~\ref{trapsR}.  The non-exclusive methods, although more redundant are better suited for the essentially heterogeneous tasks.  The \textit{Bounty Cutoff} is again statistically equivalent to the \textit{ComplexP} in both measures.
+The results are shown in Figure~\ref{trapsT} and illustrated in Figure~\ref{trapsR}.  Again the exclusive methods and the adaptive bondsman methods do not do well.  However, they are the methods that have the least redundancy as seen in Figure~\ref{trapsR}.  The non-exclusive methods, although more redundant are better suited for essentially heterogeneous tasks.  The \textit{Bounty Cutoff} is again statistically equivalent to the \textit{ComplexP} in both measures.
 
 
 \begin{figure}[t]
@@ -395,7 +395,7 @@ The results are shown in Figure~\ref{trapsT} and illustrated in Figure~\ref{trap
 
 We have demonstrated that the \textit{ComplexP} method for agents is able to adapt to their best tasks and to different types of bondsman strategies in a bounty hunter system, thus improving the efficiency of the whole system.  We have compared various approaches to the bondsman, including adaptive, exclusive and non-exclusive task allocation strategies as well as various methods of incrementing the bounty.
 
-As we had imagined, the ``complex'' non-exclusive methods performed better in dynamic situations due to their additional per-agent information, since they retained knowledge of missing agents and could immediately re-use that information when the agents were re-introduced.    While the exclusive methods generally performed well in the static and basic dynamic scenarios, Experiments 4 and 5 showed that they would perform very poorly in situations where task exclusivity could saddle agents with leaden tasks.  Without any additional information or communication, non-exclusive bounty agents naturally adapted to these situations.
+As we had imagined, the ``complex'' non-exclusive methods performed better in dynamic situations due to their additional per-agent information, since they retained knowledge of missing agents and could immediately re-use that information when the agents were re-introduced.    While the exclusive methods generally performed well in the static and basic dynamic scenarios, Experiments 4 and 5 showed that they would perform very poorly in situations where task exclusivity could saddle agents with leaden tasks.  Without any additional information or communication, non-exclusive bounty agents naturally adapted to these situations.  This is consistent with our past work.
 
 Less obvious was the fact that an adaptive bondsman is not able to produce a more efficient system in terms of both time tasks are available and redundancy of agents going after the same task.  We discovered that the bondsman, \textit{Bounty Cutoff}, does as well as our vanilla bondsman with agents that are using \textit{ComplexP}.  This suggests that our \textit{ComplexP} bounty hunters are able to adapt to the optimal number of redundant agents when necessary without the need for the bondsman to limit the number to two agents, as in \textit{Bounty Cutoff}.
 

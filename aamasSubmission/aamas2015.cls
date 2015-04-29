@@ -591,7 +591,8 @@
  \let\maketitle\relax
  \let\@maketitle\relax
  \gdef\@thanks{}\gdef\@author{}\gdef\@title{}\gdef\@subtitle{}\let\thanks\relax
- \@copyrightspace}
+ %\@copyrightspace
+ }
 
 %% CHANGES ON NEXT LINES
 \newif\if@ll % to record which version of LaTeX is in use
@@ -829,19 +830,19 @@
 %%% displacement to offset the space allocated for a non-existent
 %%% caption).
 %%%
-\newtoks\copyrightnotice
-\def\ftype@copyrightbox{8}
-\def\@copyrightspace{
-\@float{copyrightbox}[b]
-\begin{center}
-\setlength{\unitlength}{1pc}
-%\begin{picture}(20,6) %Space for copyright notice original
-\begin{picture}(20,3) %Space for copyright notice - reserve half of space, Franziska, Aug. 31. 2008
+%\newtoks\copyrightnotice
+%\def\ftype@copyrightbox{8}
+%\def\@copyrightspace{
+%\@float{copyrightbox}[b]
+%\begin{center}
+%\setlength{\unitlength}{1pc}
 
-\put(0,-0.95){\crnotice{\@toappear}}
-\end{picture}
-\end{center}
-\end@float}
+%\begin{picture}(20,3) %Space for copyright notice - reserve half of space, Franziska, Aug. 31. 2008
+
+%\put(0,-0.95){\crnotice{\@toappear}}
+%\end{picture}
+%\end{center}
+%\end@float}
 
 \def\@toappear{} % Default setting blank - commands below change this.
 %\long\def\toappear#1{\def\@toappear{\parbox[b]{20pc}{\baselineskip 9pt#1}}} 
