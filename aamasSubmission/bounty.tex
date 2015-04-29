@@ -123,7 +123,7 @@ A quick explanation of these terms for those who may be unfamiliar with them.  I
 
 Bounties are an attractive approach to the dynamic multiagent task allocation problem for several reasons.  First, because agents may compete for the same bounty, tasks are no longer exclusive.  If an agent cannot successfully do a given task, eventually its bounty will rise and attract other agents to take it from him.  Second, there is no bidding involved: agents can be self-interested, though still perhaps not hyperstrategic, and there is no need for a queue or clearing interval.  Finally, since agents are not bidding their valuation, they don't need to have (at least initially) an accurate valuation mechanism in the first place.
 
-But despite their seemingly natural fit, bounties have surprisingly been little studied in multiagent systems.  We were the first to apply bounty hunting to the dynamic multiagent task allocation problem in DREW ADD AAMAS PAPER!!!.  In this paper we will continue the study of bounty hunting, but instead focusing on the bondsman.  We first describe the formal bounty system and then we define the adjustments to the bondsman and the bounty hunter we made.  In all these approaches agents have no initial valuation of tasks, so we then examine how they may adapt to develop a proper valuation, and thus improve global system performance.  We will also examine how well this adaptation performs when the nature of tasks, or the agents, changes radically.
+But despite their seemingly natural fit, bounties have surprisingly been little studied in multiagent systems.  We were the first to apply bounty hunting to the dynamic multiagent task allocation problem in \cite{Wicke:2015}.  In this paper we will continue the study of bounty hunting, but instead focusing on the bondsman.  We first describe the formal bounty system and then we define the adjustments to the bondsman and the bounty hunter we made.  In all these approaches agents have no initial valuation of tasks, so we then examine how they may adapt to develop a proper valuation, and thus improve global system performance.  We will also examine how well this adaptation performs when the nature of tasks, or the agents, changes radically.
 
 \section{Related Work}
 
@@ -261,14 +261,12 @@ While a task remains uncompleted, its bounty gradually increases at a rate descr
 We tested five scenarios.  First, we used a {\it static environment} where agents played the game described above.  Second, we tried a {\it dynamic agent environment} where periodically some agents would be removed from the game, then added back.  Third, we tried a {\it dynamic task environment} where task complexities changed for each agent periodically.  The fourth and fifth experiments focused on extreme situations.  The fourth experiment had unreliable collaborators that were slower in going after tasks than the other agents.  In the fifth experiment we randomly modified a task class to be unexpectedly harder to do for a particular agent by making that agent a tenth its normal speed.
 
 
-Dynamic environments require that agents explore sufficiently in order to understand that the world has changed.  We tested our four new bondsmen methods using the \textit{ComplexP} method as well as the ComplexE method in conjunction with the Adaptive Bondsman (shortened to \textit{ComplexE Adap Bond.}  We compared these five methods against the ComplexP method with the standard bondsman and the exclusive bondsman from our previous work.  We chose these as they act as the boundary between the exclusivity and non-exclusivity.  
+Dynamic environments require that agents explore sufficiently in order to understand that the world has changed.  We tested our four new bondsmen methods using the \textit{ComplexP} method as well as the ComplexE method in conjunction with the Adaptive Bondsman (shortened to \textit{ComplexE Adap Bond.}).  We compared these five methods against the ComplexP method with the standard bondsman and the exclusive bondsman from our previous work.  We chose these as they act as the boundary between the exclusivity and non-exclusivity.  
 
 Simulations ran for 200,000 timesteps, yielding a minimum of 2000 tasks per agent. Each combination of method, exploration technique, and scenario was run for 100 independent trials.  Statistical significance was verified using an ANOVA with a Tukey Post-hoc Test at \(p=0.05\).  This methodology was used as to stay consistent with past work and to obtain statistically valid results.  
 
 \paragrapha{Metrics}
 Previously we used the bounty as the metric for global system efficiency, however, since the bounty values grow differently depending on the bondsman we must implement a new measure.  The metric we used for global system efficiency was the sum total time available \(h(t)\) over outstanding tasks at a given time \(t\), that is, \(h(t) =\sum_{i\in Q^{(t)}}t_i\).  This metric enabled us to compare methods that adjust bounty in a non-linear manner.  Also, since we were interested in agent level efficiency, we measured the average number of redundant bounty hunters committed to tasks.
-
-
 
 
 \subsection{First Experiment: A Static Environment}
@@ -281,21 +279,19 @@ The test results for the total time available metric are shown in Figure~\ref{st
 
 \paragrapha{Results}
 
-The results made very clear that all techniques will converge to values near to our {\it Greedy} reference.  We note an initial spike in bounty as the techniques spend time learning their best options.
-
 %\bump
 
-The best five methods were (in order but with statistically insignificant differences) {\it Greedy}, {\it Exclusive}, {\it Auction},  {\it Simple}, and {\it Complex}.  While \textit{Auction} and \textit{Exclusive} outperformed our methods, the difference was statistically insignificant.  We note that {\it Simple} (and to a lesser extent \textit{Complex}) performed this well despite having no explicit exploration strategy.  We also note here that {\it SimpleR} and {\it ComplexR}\,---\,which use a 10\% random task exploration strategy\,---\,did poorly.  This will be a continuing theme. 
+The best five methods were (in order but with statistically insignificant differences) {\it Exclusive}, {\it ComplexP}, {\it Bounty Cutoff},  {\it ComplexE Adap Bond.}, and {\it Bounty Plateau}.  While \textit{Exclusive} and \textit{ComplexP} outperformed our new methods, the difference was statistically insignificant.  We note that {\it Bounty Cutoff} performed this well despite the bondsman having no explicit adaptation strategy while using ComplexP for the bounty hunters.  We also note here that {\it Non-Lin Bounty} and {\it Adaptive Bondsman}\, did poorly in both metrics.  One interesting thing to note is that although {\it ComplexE Adap Bond.} has zero redundancy it has a higher mean (although in the same equivalency class) than {\it Exclusive}.
 
 \begin{figure}[t]
 \begin{center}\includegraphics[width=3.3in]{staticT.png}\end{center}
-\vspace{-0.5em}\caption{Experiment 1, A Static Environment, total time available metric.}
+\vspace{-0.5em}\caption{Experiment 1, A Static Environment, total time available metric, at time=200,000.  Lower mean values are better.  Equivalence Classes show statistically insignificant differences between methods.}
 \label{staticT}
 \end{figure}
 
 \begin{figure}[t]
 \begin{center}\includegraphics[width=3.3in]{staticR.png}\end{center}
-\vspace{-0.5em}\caption{Experiment 1, A Static Environment, redundancy metric.}
+\vspace{-0.5em}\caption{Experiment 1, A Static Environment, redundancy metric, at time=200,000.  Lower mean values are better.  Equivalence Classes show statistically insignificant differences between methods.}
 \label{staticR}
 \end{figure}
 
@@ -306,21 +302,18 @@ In the real world, agents are prone to failure. We tested each method's ability 
 
 \paragrapha{Results}
 
-We discovered that all the methods would adapt quickly, as illustrated in Figure~\ref{disintegratingf}. The \textit{Complex} method converged to the {\it Greedy}  performance regardless of the number of agents in the game.  This is verified in Table~\ref{disintegrating}, which reflects the final timestep 200,000, when two agents were missing from the game.
-
-We note in Figure~\ref{disintegratingf} that \textit{Complex} and \textit{ComplexR}  (shown Figure~\ref{disintegratingf}) had very high temporary peaks of poor performance compared to other methods whenever an agent would disappear: they had a larger state table and would be expected to take longer to adapt.   The 10\% random task exploration strategy once again did poorly compared to other methods. Note that \textit{Auction} outperformed  \textit{SimpleP} and \textit{SimpleR}, but not \textit{Complex}.
-
+We discovered that all the methods would adapt quickly and are all statistically the same, as illustrated in Figure~\ref{dynAgentT} and in Figure~\ref{dynAgentR}.
 
 
 \begin{figure}[t]
 \begin{center}\includegraphics[width=3.3in]{dynAgentT.png}\end{center}
-\vspace{-0.5em}\caption{Experiment 2, Dynamic Agents, total time available metric.}
+\vspace{-0.5em}\caption{Experiment 2, Dynamic Agents, total time available metric, at time=200,000.  Lower mean values are better.  Equivalence Classes show statistically insignificant differences between methods.}
 \label{dynAgentT}
 \end{figure}
 
 \begin{figure}[t]
 \begin{center}\includegraphics[width=3.3in]{dynAgentR.png}\end{center}
-\vspace{-0.5em}\caption{Experiment 2, Dynamic Agents, redundancy metric.}
+\vspace{-0.5em}\caption{Experiment 2, Dynamic Agents, redundancy metric, at time=200,000.  Lower mean values are better.  Equivalence Classes show statistically insignificant differences between methods.}
 \label{dynAgentR}
 \end{figure}
 
@@ -330,22 +323,22 @@ We note in Figure~\ref{disintegratingf} that \textit{Complex} and \textit{Comple
 If the distribution of tasks suddenly changes, we want the bounty system to recover.  To test this, we occasionally rotated the corners among the four agents: that is, agent~1's corner would become agent~2's corner, whose old corner would now belong to agent~3, and so on.  We did this every 25,000 timesteps, with a second rotation performed every 50,000 timesteps (a worst case scenario for task distribution, as the closest balls became the furthest and vice versa).
 
 \paragrapha{Results}
-This experiment, as shown in Figure~\ref{movingf} and Table~\ref{moving}, shows the weakness of relying solely on bounty for exploration: the \textit{Simple} and \textit{Complex} methods performed poorly.  Following them were the remaining random exploration methods (\textit{SimpleR}, and \textit{ComplexR}). Finally, the best adaptive methods were \textit{SimpleP}, \textit{Auction}, \textit{ComplexP}, and \textit{Exclusive}. We note that, \textit{SimpleP} and \textit{ComplexP}, performed just as well as the  \textit{Exclusive} and  \textit{Auction} methods. Unfortunately, no adaptive method could consistently converge to \textit{Greedy}'s performance.
+This experiment, as shown in Figure~\ref{rotT} and Figure~\ref{rotR}, shows the weakness of \textit{ComplexE AdapBond.} as it does the worst due to how drastically the environment changes due to agent location.  By rotating the agents, tasks that were exclusive should be non-exclusive however the bondsman is not able to adapt quick enough causing the tasks to wait much longer than any other method to be completed. Also, since the agents are now also learning about the exclusivity of the tasks, \textit{ComplexE}, the agents are less likely to go after tasks that they think will be exclusive.  So, they are less willing to adapt to their new position. Following \textit{ComplexE AdapBond.} is the \textit{Adaptive Bondsman}.  This method is in a totally different equivalency class than \textit{ComplexE AdapBond.}.  The only difference between the two is the learning method of the bounty hunters.  Therefore, the \textit{ComplexE} method is not able to effectively adapt to the rotating robots with an \textit{Adaptive Bondsman}.
+
+Another interesting result is that the redundancy of all of the methods are equivalent as seen in Figure~\ref{rotR}.  This was initially shocking due to rotating of the agents.  We initially hypothesized that there would be some redundancy due to overlap in the transition.  However, the agents are able to effectively transition as well as the \textit{Exclusive} approach, which does not allow redundant agents.
 
 
 %\bump
 
-We also note that after several iterations of rotations, the agents were unable to converge to the same (lower) value.  This is because the rate of rotating was too fast for the adaptive methods to catch up and so the total bounty would gradually pile up. This was especially true for the \textit{Auction} strategy.  In the first few iterations \textit{Auctions} started out better than \textit{ComplexP}, but by the last iteration, they were equivalent.
-
 \begin{figure}[t]
 \begin{center}\includegraphics[width=3.3in]{rotT.png}\end{center}
-\vspace{-0.5em}\caption{Experiment 3, Dynamic Tasks, total time available metric.}
+\vspace{-0.5em}\caption{Experiment 3, Dynamic Tasks, total time available metric, at time=200,000.  Lower mean values are better.  Equivalence Classes show statistically insignificant differences between methods.}
 \label{rotT}
 \end{figure}
 
 \begin{figure}[t]
 \begin{center}\includegraphics[width=3.3in]{rotR.png}\end{center}
-\vspace{-0.5em}\caption{Experiment 3, Dynamic Tasks, redundancy metric.}
+\vspace{-0.5em}\caption{Experiment 3, Dynamic Tasks, redundancy metric, at time=200,000.  Lower mean values are better.  Equivalence Classes show statistically insignificant differences between methods.}
 \label{rotR}
 \end{figure}
 
@@ -356,18 +349,20 @@ The purpose of Experiments 4 and 5 is to show when exclusivity can fail. In the 
 
 Suppose a system has agents which do not perform nearly as well as other agents. In this experiment, there were 2 agents, placed in the top left corner of the grid world, who moved 10x slower than other agents, and 4 agents, placed in the corners (like normal), who moved at a normal speed. We chose to test \textit{ComplexP} as our main bounty mechanism, and compared it to our two auction-like algorithms (\textit{Auction} and \textit{Exclusive}).
 
-\paragrapha{Results} The results are shown in Table~\ref{unreliableT} and illustrated in Figure~\ref{badrobotsf}.  \textit{ComplexP} was clearly the best in this test. The obvious underlying reason was that agents at normal speed would win a race to a ball (a task) against a slow, unreliable collaborator.  The auction-like methods simply had no way to prevent the unreliable collaborator from holding things up.  Also, \textit{ComplexP} was naturally suited to this task due to the added information it learned about the other agents in the environment.
+\paragrapha{Results} 
+The results with the two metrics are shown in Figure~\ref{badT} and Figure~\ref{badR}.  \textit{Bounty Cutoff} has the lowest mean total time available in this test.  However, it is statistically equivalent to \textit{ComplexP}.  As before, \textit{Exclusive} is statistically significantly worse than non-exclusive methods for this experiment. The obvious underlying reason was that agents at normal speed would win a race to a ball (a task) against a slow, unreliable collaborator.  The exclusive methods simply had no way to prevent the unreliable collaborator from holding things up.  Also, the non-exclusive methods were naturally suited to this task due to the added information it learned about the other agents in the environment since the bounty hunters were using \textit{ComplexP}.  The \textit{Bounty Cutoff} does the best because it limits the number of redundant agents to a max of two.  Limiting tasks to only two agents, as was mentioned earlier, is the optimal number of agents in a contest.
 
+The Figure~\ref{badR} shows that although \textit{Bounty Cutoff} is in the same equivalence class as the other non-exclusive methods, it is has the smallest mean.  Also, note that due to the fact that there are now 6 agents in the environment the value of the mean for the \textit{Bounty Cutoff} will be larger.  This value suggests that there is a need for redundancy for this task.  Which is consistent with the fact that we have agents that are much slower competing for tasks.
 
 \begin{figure}[t]
 \begin{center}\includegraphics[width=3.3in]{badT.png}\end{center}
-\vspace{-0.5em}\caption{Experiment 4, Unreliable Collaborators, total time available metric.}
+\vspace{-0.5em}\caption{Experiment 4, Unreliable Collaborators, total time available metric, at time=200,000.  Lower mean values are better.  Equivalence Classes show statistically insignificant differences between methods.}
 \label{badT}
 \end{figure}
 
 \begin{figure}[t]
 \begin{center}\includegraphics[width=3.3in]{badR.png}\end{center}
-\vspace{-0.5em}\caption{Experiment 4, Unreliable Collaborators, redundancy metric.}
+\vspace{-0.5em}\caption{Experiment 4, Unreliable Collaborators, redundancy metric, at time=200,000.  Lower mean values are better.  Equivalence Classes show statistically insignificant differences between methods.}
 \label{badR}
 \end{figure}
 
@@ -375,22 +370,22 @@ Suppose a system has agents which do not perform nearly as well as other agents.
 
 \subsection{Fifth Experiment: Unexpectedly Bad Tasks}
 We now consider an experiment where some tasks suddenly change in difficulty for particular agents. We modified the scenario such that, every time a task class reappeared on the board, there was a 10\% probability it would become ``difficult'' for a randomly-selected agent to complete.  By ``difficult'' we mean that this agent, upon choosing this task, would move at 
-one-tenth his normal speed. %If a task is already difficult for an agent to do, there is still a 1 in 10 chance it will become difficult for a different agent after reappearing. 
+one-tenth his normal speed.
 
-We once again compared \textit{ComplexP}, \textit{Exclusive}, and \textit{Auction}.
-% in this experiment.
+\paragrapha{Results} 
 
-\paragrapha{Results} The results are shown in Table~\ref{trapT} and illustrated in Figure~\ref{badtasksf}.  \textit{ComplexP}, again, was the clear winner.  Once again, the exclusivity of the auction-like methods prevented agents from taking over ``difficult'' tasks which have trapped helpless agents.
+The results are shown in Figure~\ref{trapsT} and illustrated in Figure~\ref{trapsR}.  Again the exclusive methods and the adaptive bondsmen methods do not do well.  However, they are the methods that have the least redundancy as seen in Figure~\ref{trapsR}.  The non-exclusive methods, although more redundant are better suited for the essentially heterogeneous tasks.  The \textit{Bounty Cutoff} is again statistically equivalent to the \textit{ComplexP} in both measures.
+
 
 \begin{figure}[t]
 \begin{center}\includegraphics[width=3.3in]{trapsT.png}\end{center}
-\vspace{-0.5em}\caption{Experiment 5, Unexpectedly Bad Tasks, total time available metric.}
+\vspace{-0.5em}\caption{Experiment 5, Unexpectedly Bad Tasks, total time available metric, at time=200,000.  Lower mean values are better.  Equivalence Classes show statistically insignificant differences between methods.}
 \label{trapsT}
 \end{figure}
 
 \begin{figure}[t]
 \begin{center}\includegraphics[width=3.3in]{trapsR.png}\end{center}
-\vspace{-0.5em}\caption{Experiment 5, Unexpectedly Bad Tasks, redundancy metric.}
+\vspace{-0.5em}\caption{Experiment 5, Unexpectedly Bad Tasks, redundancy metric, at time=200,000.  Lower mean values are better.  Equivalence Classes show statistically insignificant differences between methods.}
 \label{trapsR}
 \end{figure}
 
@@ -398,9 +393,11 @@ We once again compared \textit{ComplexP}, \textit{Exclusive}, and \textit{Auctio
 \vspace{-0.5em}
 \section{Conclusions} 
 
-We have demonstrated methods for agents to adapt to their best tasks in a bounty hunter system, thus improving the efficiency of the whole system.  We have compared various approaches to adaptation, as well as both exclusive and non-exclusive task allocation strategies.  
+We have demonstrated that the \textit{ComplexP} method for agents is able to adapt to their best tasks and to different types of bondsman strategies in a bounty hunter system, thus improving the efficiency of the whole system.  We have compared various approaches to the bondsman, including adaptive, exclusive and non-exclusive task allocation strategies as well as various methods of incrementing the bounty.
 
-As we had imagined, the ``complex'' non-exclusive methods performed better in dynamic situations due to their additional per-agent information, since they retained knowledge of missing agents and could immediately re-use that information when the agents were re-introduced.    While the exclusive and ``auction-like'' methods generally performed well in the static and basic dynamic scenarios, Experiments 4 and 5 showed that they would perform very poorly in situations where task exclusivity could saddle agents with leaden tasks.  Without any additional information or communication, non-exclusive bounty agents naturally adapted to these situations. In the future, we will look at different scenarios which take advantage of this natural adaptation.  
+As we had imagined, the ``complex'' non-exclusive methods performed better in dynamic situations due to their additional per-agent information, since they retained knowledge of missing agents and could immediately re-use that information when the agents were re-introduced.    While the exclusive methods generally performed well in the static and basic dynamic scenarios, Experiments 4 and 5 showed that they would perform very poorly in situations where task exclusivity could saddle agents with leaden tasks.  Without any additional information or communication, non-exclusive bounty agents naturally adapted to these situations.
+
+Less obvious was the fact that an adaptive bondsman is not able to produce a more efficient system in terms of both time tasks are available and redundancy of agents going after the same task.  We discovered that the bondsman, \textit{Bounty Cutoff}, does as well as our vanilla bondsman with agents that are using \textit{ComplexP}.  This suggests that our \textit{ComplexP} bounty hunters are able to adapt to the optimal number of redundant agents when necessary without the need for the bondsman to limit the number to two agents, as in \textit{Bounty Cutoff}.
 
 A bounty hunter system is a promising method for task allocation: it seems robust to loss of agents, changes in task difficulty, and other kinds of noise.  The key properties of a bounty hunter system which distinguish it from other methods, and permits this robustness, is its non-exclusivity of task assignment, lack of a bidding structure, and the increasing attractiveness of outstanding tasks as the bounty on them rises.  For this reason, it is surprising bounties have not been studied more: we hope this trend will change in the future.
 
